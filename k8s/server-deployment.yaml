@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: server
   namespace: default
 spec:
   progressDeadlineSeconds: 600
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: server
   strategy:
     rollingUpdate:
       maxSurge: 33%
@@ -17,19 +17,22 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend
+        app: server
     spec:
       containers:
-      - image: ghcr.io/paulopacitti/titanic:main
+      - image: ghcr.io/paulopacitti/skynet-server:main
         imagePullPolicy: IfNotPresent
-        name: frontend
+        name: server
         resources:
           requests:
-            memory: "2Mi"
-            cpu: "1m"
-          limits:
             memory: "256Mi"
             cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "350m"
         ports:
-        - containerPort: 80
+        - containerPort: 50001
           protocol: TCP
+        env:
+        - name: SERVER_ADDRESS
+          value: "server:50001"

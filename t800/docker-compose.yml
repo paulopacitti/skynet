@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  server:
+    image: skynet-server:latest
+    ports:
+      - "50051:50051"
+  # client-1:
+  #   image: skynet-client:latest
+  #   depends_on:
+  #     - server
+  #   environment:
+  #     SERVER_ADDRESS: "http://localhost:50051"
+  # client-2:
+  #   image: skynet-client:latest
+  #   depends_on:
+  #     - server
+  #   environment:
+  #     SERVER_ADDRESS: "http://localhost:50051"
