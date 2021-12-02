@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+service Lamport {
+  rpc sync(Timestamp) returns (Timestamp){}
+}
+
+message Timestamp {
+  string sender = 1;
+  int32 timestamp = 2;
+  string message = 3;
+}
