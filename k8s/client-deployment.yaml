@@ -33,3 +33,6 @@ spec:
         ports:
         - containerPort: 50001
           protocol: TCP
+        env:
+        - name: SERVER_ADDRESS
+          value: "server:50001"
