@@ -2,7 +2,7 @@ let grpc = require('@grpc/grpc-js');
 const protoLoader = require("@grpc/proto-loader");
 //Load protobuf
 const proto = grpc.loadPackageDefinition(
-  protoLoader.loadSync("src/protos/lamport.proto", {
+  protoLoader.loadSync("./protos/lamport.proto", {
     keepCase: true,
     longs: String,
     enums: String,
@@ -10,12 +10,30 @@ const proto = grpc.loadPackageDefinition(
     oneofs: true
   })
 );
-
 const server = new grpc.Server();
 const SERVER_ADDRESS = "localhost:50051";
-server.addService(proto.Lamport.service, { sync: sync });
+
+let counter = 0;
+const tick = Math.floor(Math.random() * 10 + 1) // Esse é o incremento aleatório de 1 a 10 do relógio
+
+function updateCounterValue(clientCounter) {
+  counter = Math.max(counter, clientCounter) + 1
+}
+
+function logReceivedMessage(message, sender) {
+  console.log(`Messagem '${message}' recebida de '${sender}' em ${counter}`);
+}
 
 const sync = (call, callback) => {
-
+  const { sender, timestamp, message } = call.request;
+  updateCounterValue(timestamp);
+  logReceivedMessage(message, sender);
+  callback(null, {message: message, sender: SERVER_ADDRESS, timestamp: counter});
 };
 
+server.addService(proto.Lamport.service, { sync: sync });
+
+
+server.bindAsync(SERVER_ADDRESS, grpc.ServerCredentials.createInsecure(), () => {
+  server.start();
+});
