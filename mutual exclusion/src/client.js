@@ -45,7 +45,7 @@ function getResourcesNeeded() {
     resources.push(availableResources[getRandomInt(0, availableResources.length)]);
   }
 
-  return [1,1,2];
+  return resources;
 }
 
 function sleep(ms) {
