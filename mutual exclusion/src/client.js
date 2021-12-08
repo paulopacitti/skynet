@@ -18,7 +18,6 @@ const client = new proto.MutualExclusion(
 );
 const sender = generateUUID();
 const availableResources = [1, 2, 3];
-let currentResource = null;
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -46,7 +45,7 @@ function getResourcesNeeded() {
     resources.push(availableResources[getRandomInt(0, availableResources.length)]);
   }
 
-  return resources;
+  return [1,1,2];
 }
 
 function sleep(ms) {
@@ -68,6 +67,7 @@ async function main() {
   let usedResourcesCounter = 0;
   let currentResourceCounter = -1;
   let shouldStopLoop = false
+
   console.log(`Hello, I'm ${sender}`);
   console.log("The resources I want to use are ", resources);
   while (!shouldStopLoop) {
@@ -81,7 +81,6 @@ async function main() {
       }, () => {});
       connection.on("data", async (message) => {
         const { resource, requesterId } = message;
-        currentResource = resource;
         console.log(`${sender} is now using resource: ${resource}`);
         await useResource(resource);
         usedResourcesCounter += 1;
