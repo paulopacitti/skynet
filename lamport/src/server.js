@@ -14,7 +14,6 @@ const server = new grpc.Server();
 const SERVER_ADDRESS = "localhost:50051";
 
 let counter = 0;
-const tick = Math.floor(Math.random() * 10 + 1) // Esse é o incremento aleatório de 1 a 10 do relógio
 
 function updateCounterValue(clientCounter) {
   counter = Math.max(counter, clientCounter) + 1
