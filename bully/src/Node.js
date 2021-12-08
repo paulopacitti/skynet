@@ -57,7 +57,7 @@ exports = module.exports = function nodeFactory(id, relativeElectionResponseTime
           break;
         case 'COORDINATOR':
           if (args.sender < node.id) {
-            if (node.id == node.currentLeader) {
+            if (node.id === node.currentLeader) {
               console.log(`hey ${args.sender}, my nodes are loyal to me!`.toUpperCase());
             } else {
               console.log(`so, yeah... thats akward ${args.sender}, I'm gonna go ahead and start a new election`.toUpperCase());

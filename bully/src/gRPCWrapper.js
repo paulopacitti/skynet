@@ -5,7 +5,7 @@ let grpc = require('@grpc/grpc-js');
 const protoLoader = require("@grpc/proto-loader");
 const nodeFactory = require('./Node.js');
 
-const port = 50053 || process.env.SERVER_PORT
+const port = process.argv[2]
 const nodeId = port;
 const relativeElectionResponseTimeout = 100; // will be multiplied by the number of peers
 
@@ -31,7 +31,7 @@ node.events.on('COORDINATOR', (e) => {
 });
 
 function inbox(call, callback) {
-  if (call.request.type == 'COORDINATOR')
+  if (call.request.type === 'COORDINATOR')
     pingLeaderOnAnInterval();
 
   node.inbox(call.request.type, {
@@ -51,10 +51,7 @@ function addPeers(call, callback) {
 
 function sendToPeer(port, payload) {
   let client = new proto.Peer('0.0.0.0:' + port, grpc.credentials.createInsecure());
-  client.inbox(payload, (err, response) => {
-    if (err)
-      console.log(err);
-  });
+  client.inbox(payload, (err, response) => {});
 }
 
 function pingLeaderOnAnInterval() {
