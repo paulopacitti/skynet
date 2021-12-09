@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+service MutualExclusion{
+  rpc requestResource(Message) returns (stream Message){}
+  rpc freeResource(Message) returns(Message){}
+}
+
+message Message {
+  int32 resource = 1;
+  string requesterId = 2;
+}
